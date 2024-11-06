@@ -3,6 +3,9 @@ using UnityEngine;
 
 public class DayNightCycleManager : MonoBehaviour
 {
+    // Singleton instance
+    public static DayNightCycleManager Instance { get; private set; }
+
     public Light directionalLight; // The directional light to control
     public Color dayLightColor = Color.white; // Daylight color
     public Color nightLightColor = new Color(0.2f, 0.2f, 0.5f); // Nightlight color (moonlight)
@@ -11,12 +14,26 @@ public class DayNightCycleManager : MonoBehaviour
     public float transitionDuration = 2f; // Duration of the transition between day and night
     public float rotationSpeed = 10f; // Speed of light rotation
 
-    private bool isDaytime = true;
-    private bool isTransitioning = false; // Flag to check if a transition is happening
+    public bool isDaytime = true;
+    public bool isTransitioning = false; // Flag to check if a transition is happening
 
     // Rotation variables
     private float currentRotationAngle = 1f; // Start at the minimum angle
     private float rotationDirection = 1f; // 1 for positive, -1 for negative
+
+    private void Awake()
+    {
+        // Singleton logic
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject); // Ensure only one instance exists
+        }
+        else
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject); // Persist across scenes
+        }
+    }
 
     void Start()
     {
@@ -87,7 +104,7 @@ public class DayNightCycleManager : MonoBehaviour
         }
     }
 
-    private IEnumerator ChangeToNight()
+    public IEnumerator ChangeToNight()
     {
         isTransitioning = true; // Set transitioning flag
         float elapsedTime = 0f;
@@ -110,7 +127,7 @@ public class DayNightCycleManager : MonoBehaviour
         isTransitioning = false; // Reset transitioning flag
     }
 
-    private IEnumerator ChangeToDay()
+    public IEnumerator ChangeToDay()
     {
         isTransitioning = true; // Set transitioning flag
         float elapsedTime = 0f;

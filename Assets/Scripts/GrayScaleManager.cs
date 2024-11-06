@@ -2,18 +2,30 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GrayscaleManager: MonoBehaviour
+public class GrayscaleManager : MonoBehaviour
 {
+    public static GrayscaleManager Instance { get; private set; } // Singleton instance
+
     public List<GameObject> targetGameObjects; // List of GameObjects to apply grayscale
     [Range(0, 1)]
-    public float grayscaleAmount = 0f; // Start with no grayscale effect
+    public float grayscaleAmount = 1f; // Start with no grayscale effect
     public float transitionDuration = 2f; // Duration for gradual transitions
 
     private List<Renderer> targetRenderers; // List of Renderers to modify
     private Coroutine currentCoroutine;
 
-    void Awake()
+    private void Awake()
     {
+        // Implement Singleton pattern
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject); // Destroy duplicate
+            return;
+        }
+
+        Instance = this; // Set the instance
+        DontDestroyOnLoad(gameObject); // Optional: Keep the instance alive across scenes
+
         // Initialize the list of renderers
         targetRenderers = new List<Renderer>();
 
@@ -40,28 +52,6 @@ public class GrayscaleManager: MonoBehaviour
 
     void Update()
     {
-        // Check for input keys for gradual grayscale and restore
-        if (Input.GetKeyDown(KeyCode.Q)) // Press Q to apply grayscale gradually
-        {
-            GraduallyApplyGrayscale();
-        }
-
-        if (Input.GetKeyDown(KeyCode.W)) // Press W to restore color gradually
-        {
-            GraduallyRestoreColor();
-        }
-
-        // Check for input keys for instant grayscale and restore
-        if (Input.GetKeyDown(KeyCode.A)) // Press A for instant grayscale
-        {
-            InstantGrayscale();
-        }
-
-        if (Input.GetKeyDown(KeyCode.S)) // Press S for instant color restoration
-        {
-            InstantRestoreColor();
-        }
-
         // Update the grayscale amount in each material
         UpdateGrayscaleAmount();
     }
