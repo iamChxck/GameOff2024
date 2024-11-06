@@ -17,18 +17,20 @@ using UnityEngine.InputSystem.Utilities;
 
 public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
 {
-    private static PlayerInputActions instance;
+    // Static instance property for the Singleton pattern
+    private static PlayerInputActions _instance;
 
-    // Singleton property
+    // Public static property to access the instance
     public static PlayerInputActions Instance
     {
         get
         {
-            if (instance == null)
+            // Create the instance if it doesn't exist
+            if (_instance == null)
             {
-                instance = new PlayerInputActions();
+                _instance = new PlayerInputActions();
             }
-            return instance;
+            return _instance;
         }
     }
 
