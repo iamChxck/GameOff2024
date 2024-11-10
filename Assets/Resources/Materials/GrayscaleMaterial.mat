@@ -21,7 +21,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: GrayscaleMaterial
-  m_Shader: {fileID: 4800000, guid: 71f23d0b4407856409cdb9bfcd4c7ffe, type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: 5fcff4c485474fe488ac0041c91350db, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -116,6 +116,7 @@ Material:
     - _Metallic: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.005
+    - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1
     - _Smoothness: 0.5

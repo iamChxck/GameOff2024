@@ -107,8 +107,17 @@ public class GrayscaleManager : MonoBehaviour
         {
             if (renderer != null)
             {
-                renderer.material.SetFloat("_GrayscaleAmount", grayscaleAmount);
+                Material material = renderer.material;
+
+                // Set the BaseColor to red if no texture is assigned
+                if (material.HasProperty("_BaseColor") && !material.HasProperty("_MainTex"))
+                    material.SetColor("_BaseColor", Color.red);
+
+                // Set the _GrayscaleAmount property if it exists on the material
+                if (material.HasProperty("_GrayscaleAmount"))
+                    material.SetFloat("_GrayscaleAmount", grayscaleAmount);
             }
         }
     }
+
 }
