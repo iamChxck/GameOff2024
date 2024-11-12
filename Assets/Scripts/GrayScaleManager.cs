@@ -9,7 +9,7 @@ public class GrayscaleManager : MonoBehaviour
     public List<GameObject> targetGameObjects; // List of GameObjects to apply grayscale
     [Range(0, 1)]
     public float grayscaleAmount = 1f; // Start with no grayscale effect
-    public float transitionDuration = 2f; // Duration for gradual transitions
+    public float transitionDuration = 1f; // Duration for gradual transitions
 
     private List<Renderer> targetRenderers; // List of Renderers to modify
     private Coroutine currentCoroutine;

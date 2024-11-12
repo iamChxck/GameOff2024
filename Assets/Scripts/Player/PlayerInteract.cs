@@ -184,11 +184,11 @@ public class PlayerInteract : MonoBehaviour
     {
         if (isLensEquipped)
         {
-            GrayscaleManager.Instance.InstantRestoreColor();
+            GrayscaleManager.Instance.GraduallyRestoreColor();
         }
         else
         {
-            GrayscaleManager.Instance.InstantGrayscale();
+            GrayscaleManager.Instance.GraduallyApplyGrayscale();
         }
     }
 }
