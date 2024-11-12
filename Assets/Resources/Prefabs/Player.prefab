@@ -238,9 +238,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30f7e34d333d0c74d8185fc9daabf8a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentlySelectedItem: {fileID: 0}
+  playerInventory: {fileID: 0}
   interactRange: 3
   hasLens: 0
+  hasDayNightCycler: 0
   isLensEquipped: 0
+  lensStamina: 100
+  lensDrainRate: 10
+  lensRegenRate: 10
 --- !u!114 &2325285826528948008
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -255,8 +261,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inventory: {fileID: 11400000, guid: c9d8daa691a578241b6cbda18be3b324, type: 2}
   inventoryDisplay: {fileID: 0}
-  highlightMaterial: {fileID: 0}
-  playerCamera: {fileID: 0}
   isInventoryOpen: 0
 --- !u!1 &4459864850190357393
 GameObject:
