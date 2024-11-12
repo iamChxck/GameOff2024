@@ -3,7 +3,7 @@ using UnityEngine;
 public class TileTrigger : MonoBehaviour
 {
     public string tileColor; // To specify which tile it is
-    private ChromaticPair chromaticPair; // Cached reference to the ChromaticPair script
+    private EchoingColor chromaticPair; // Cached reference to the ChromaticPair script
 
     private void Start()
     {
@@ -11,7 +11,7 @@ public class TileTrigger : MonoBehaviour
         tileColor = gameObject.name;
 
         // Cache the ChromaticPair component reference for better performance
-        chromaticPair = FindObjectOfType<ChromaticPair>();
+        chromaticPair = FindObjectOfType<EchoingColor>();
     }
 
     void OnTriggerEnter(Collider other)

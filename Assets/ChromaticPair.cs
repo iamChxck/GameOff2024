@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ChromaticPair : MonoBehaviour
+public class EchoingColor : MonoBehaviour
 {
     public GameObject door;  // Reference to the door object
     public GameObject tiles; // Reference to the tiles object
