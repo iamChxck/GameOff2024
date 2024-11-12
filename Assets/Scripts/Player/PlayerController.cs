@@ -40,7 +40,8 @@ public class PlayerController : MonoBehaviour
     public float zoomStepTime = 5f;
 
     // Internal Variables
-    private bool isZoomed = false;
+    [HideInInspector] // Don't really need to see this on the inspector
+    public bool isZoomed = false;
 
     #endregion
     #endregion

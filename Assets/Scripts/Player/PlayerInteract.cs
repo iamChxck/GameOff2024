@@ -132,6 +132,7 @@ public class PlayerInteract : MonoBehaviour
     private void ToggleLens()
     {
         isLensEquipped = !isLensEquipped;
+        Debug.Log("Test");
         UpdateGrayscaleEffect();
 
     }
