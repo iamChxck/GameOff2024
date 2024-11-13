@@ -44,7 +44,7 @@ public class PlayerInteract : MonoBehaviour
         inputActions.Player.Grab.started += StartGrab; // When LMB is pressed
         inputActions.Player.Grab.canceled += EndGrab; // When LMB is released
 
-        inputActions.Enable();
+        //inputActions.Enable();
         playerCamera = Camera.main;
     }
 
@@ -63,13 +63,6 @@ public class PlayerInteract : MonoBehaviour
         if (grabbedObject != null && inputActions.Player.Grab.IsPressed())
         {
             MoveGrabbedObject();
-        }
-
-        // Directly check if F is pressed - TEMPORARY MEASURE AS I HAVE NO IDEA WHY THE INTERACT BIND IS NOT WORKING WHEN THE USEITEM BIND IS WORKING JUST FINE (WILL FIX THIS LATER)
-        if (Keyboard.current.fKey.wasPressedThisFrame)
-        {
-            Debug.Log("F key pressed directly.");
-            InteractItem(new InputAction.CallbackContext()); // Simulate calling the method
         }
 
         if (currentlySelectedItem != null && currentlySelectedItem.GetComponent<PlayerDevice>() != null &&

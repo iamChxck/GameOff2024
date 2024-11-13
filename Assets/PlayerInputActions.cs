@@ -17,7 +17,7 @@ using UnityEngine.InputSystem.Utilities;
 
 public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
 {
-    // Static instance property for the Singleton pattern
+     // Static instance property for the Singleton pattern
     private static PlayerInputActions _instance;
 
     // Public static property to access the instance
@@ -33,7 +33,6 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             return _instance;
         }
     }
-
     public InputActionAsset asset { get; }
     public @PlayerInputActions()
     {
@@ -208,17 +207,6 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""1c04ea5f-b012-41d1-a6f7-02e963b52893"",
-                    ""path"": ""<Keyboard>/f"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""Interact"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""36e52cba-0905-478e-a818-f4bfcb9f3b9a"",
                     ""path"": ""<Keyboard>/ctrl"",
                     ""interactions"": """",
@@ -232,7 +220,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""name"": """",
                     ""id"": ""4898c4e5-41e1-43ea-8024-9df05b0a9175"",
                     ""path"": ""<Keyboard>/e"",
-                    ""interactions"": """",
+                    ""interactions"": ""Press"",
                     ""processors"": """",
                     ""groups"": "";Keyboard&Mouse"",
                     ""action"": ""UseItem"",
@@ -247,6 +235,17 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": "";Keyboard&Mouse"",
                     ""action"": ""Grab"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c0888d0f-aa78-4f37-afa3-03a81fa8b134"",
+                    ""path"": ""<Keyboard>/f"",
+                    ""interactions"": ""Press"",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""Interact"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
