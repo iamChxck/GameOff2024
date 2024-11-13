@@ -21,30 +21,55 @@ public class PlayerInteract : MonoBehaviour
     public float lensDrainRate = 25f; // Stamina drain per second
     public float lensRegenRate = 10f; // Stamina regeneration per second when unequipped
 
+    //Grab variables
+    private GameObject grabbedObject;
+    private Rigidbody grabbedObjectRb;
+    private float grabDistance = 2f;
+
     private void Awake()
     {
         playerInventory = GetComponent<PlayerInventory>();
-        inputActions = PlayerInputActions.Instance; // Use the singleton instance
-        inputActions.Player.Interact.performed += OnInteract; // Bind the Interact action
-        inputActions.Player.UseItem.performed += UseSelectedItem; // Bind the UseItem action
-        inputActions.Enable();
+        inputActions = PlayerInputActions.Instance;
 
-        playerCamera = Camera.main; // Assumes the main camera is used for the player's view
+        if (inputActions == null)
+        {
+            Debug.LogError("PlayerInputActions.Instance is null");
+            return;
+        }
+
+        inputActions.Player.Interact.performed += InteractItem; // F key
+        inputActions.Player.UseItem.performed += UseSelectedItem; // E key
+
+        // Bind Grab action for holding objects
+        inputActions.Player.Grab.started += StartGrab; // When LMB is pressed
+        inputActions.Player.Grab.canceled += EndGrab; // When LMB is released
+
+        inputActions.Enable();
+        playerCamera = Camera.main;
     }
 
     private void OnDestroy()
     {
-        inputActions.Player.Interact.performed -= OnInteract; // Unbind the Interact action
-        inputActions.Player.UseItem.performed -= UseSelectedItem; // Unbind the UseItem action
+        inputActions.Player.Interact.performed -= InteractItem;
+        inputActions.Player.UseItem.performed -= UseSelectedItem;
+        inputActions.Player.Grab.started -= StartGrab;
+        inputActions.Player.Grab.canceled -= EndGrab;
     }
 
     private void Update()
     {
+
+        //Check if player is grabbing an object
+        if (grabbedObject != null && inputActions.Player.Grab.IsPressed())
+        {
+            MoveGrabbedObject();
+        }
+
         // Directly check if F is pressed - TEMPORARY MEASURE AS I HAVE NO IDEA WHY THE INTERACT BIND IS NOT WORKING WHEN THE USEITEM BIND IS WORKING JUST FINE (WILL FIX THIS LATER)
         if (Keyboard.current.fKey.wasPressedThisFrame)
         {
             Debug.Log("F key pressed directly.");
-            OnInteract(new InputAction.CallbackContext()); // Simulate calling the method
+            InteractItem(new InputAction.CallbackContext()); // Simulate calling the method
         }
 
         if (currentlySelectedItem != null && currentlySelectedItem.GetComponent<PlayerDevice>() != null &&
@@ -85,7 +110,51 @@ public class PlayerInteract : MonoBehaviour
 
     }
 
-    private void OnInteract(InputAction.CallbackContext context)
+    public void StartGrab(InputAction.CallbackContext context)
+    {
+        if (grabbedObject != null)
+            return;
+
+        // Perform raycast to detect interactable objects
+        Ray ray = new Ray(playerCamera.transform.position, playerCamera.transform.forward);
+        RaycastHit hit;
+        if (Physics.Raycast(ray, out hit, interactRange))
+        {
+            if (hit.collider.CompareTag("Interactable"))
+            {
+                grabbedObject = hit.collider.gameObject;
+                grabbedObjectRb = grabbedObject.GetComponent<Rigidbody>();
+
+                if (grabbedObjectRb != null)
+                {
+                    grabbedObjectRb.isKinematic = true; // Disable physics while grabbing
+                }
+            }
+        }
+    }
+
+    private void EndGrab(InputAction.CallbackContext context)
+    {
+        ReleaseObject();
+    }
+
+    private void ReleaseObject()
+    {
+        if (grabbedObject != null && grabbedObjectRb != null)
+        {
+            grabbedObjectRb.isKinematic = false;
+        }
+        grabbedObject = null;
+        grabbedObjectRb = null;
+    }
+
+    private void MoveGrabbedObject()
+    {
+        Vector3 targetPosition = playerCamera.transform.position + playerCamera.transform.forward * grabDistance;
+        grabbedObject.transform.position = Vector3.Lerp(grabbedObject.transform.position, targetPosition, Time.deltaTime * 10f);
+    }
+
+    private void InteractItem(InputAction.CallbackContext context)
     {
         if (currentOutline != null && currentOutline.CompareTag("Interactable"))
         {
@@ -132,7 +201,6 @@ public class PlayerInteract : MonoBehaviour
     private void ToggleLens()
     {
         isLensEquipped = !isLensEquipped;
-        Debug.Log("Test");
         UpdateGrayscaleEffect();
 
     }

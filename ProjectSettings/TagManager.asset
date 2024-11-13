@@ -9,6 +9,7 @@ TagManager:
   - SlotDevice
   - ChargingStation
   - FleetingShade
+  - Tile
   layers:
   - Default
   - TransparentFX
