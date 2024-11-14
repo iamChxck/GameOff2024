@@ -43,18 +43,7 @@ public class DayNightCycleManager : MonoBehaviour
 
     void Update()
     {
-        // Toggle between day and night when the user presses the 'T' key
-        if (Input.GetKeyDown(KeyCode.T) && !isTransitioning)
-        {
-            if (isDaytime)
-            {
-                StartCoroutine(ChangeToNight());
-            }
-            else
-            {
-                StartCoroutine(ChangeToDay());
-            }
-        }
+       
 
         // Rotate the directional light to simulate sun movement during transitions
         if (isTransitioning)

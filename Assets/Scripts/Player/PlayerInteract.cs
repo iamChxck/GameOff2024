@@ -4,32 +4,33 @@ using UnityEngine.InputSystem;
 
 public class PlayerInteract : MonoBehaviour
 {
-    public GameObject currentlySelectedItem; // Store the currently selected item
+    public GameObject currentlySelectedItem; 
+    public PlayerInventory playerInventory; 
 
-    public PlayerInventory playerInventory; // Reference to the player's inventory
-    private PlayerInputActions inputActions; // Reference to the generated input actions
-    private Camera playerCamera; // Reference to the player's camera for raycasting direction
-    private OutlineEffect currentOutline; // Store the currently highlighted outline
+    //Internal Variables
+    private PlayerInputActions inputActions; 
+    private Camera playerCamera; 
+    private OutlineEffect currentOutline; 
 
     public float interactRange = 3f; // Range of interaction
-    public bool hasLens; // Track whether the player has picked up the Lens
-    public bool hasDayNightCycler; // Track whether the player has picked up the DayNightCycler
     public bool isLensEquipped; // Track whether the Lens is currently equipped
 
-    // Lens stamina
+    #region Lens Variables
     public float lensStamina = 100f; // Starting stamina
     public float lensDrainRate = 25f; // Stamina drain per second
     public float lensRegenRate = 10f; // Stamina regeneration per second when unequipped
+    #endregion
 
-    //Grab variables
+    #region Grab Variables
     private GameObject grabbedObject;
     private Rigidbody grabbedObjectRb;
     private float grabDistance = 2f;
+    #endregion
 
     private void Awake()
     {
         playerInventory = GetComponent<PlayerInventory>();
-        inputActions = PlayerInputActions.Instance;
+        inputActions = InputActionSingleton.Instance;
 
         if (inputActions == null)
         {
@@ -37,70 +38,91 @@ public class PlayerInteract : MonoBehaviour
             return;
         }
 
-        inputActions.Player.Interact.performed += InteractItem; // F key
-        inputActions.Player.UseItem.performed += UseSelectedItem; // E key
+        //Bind the actions to a method
+        inputActions.Player.Interact.performed += InteractItem; 
+        inputActions.Player.UseItem.performed += UseSelectedItem; 
+        inputActions.Player.Grab.started += StartGrab; 
+        inputActions.Player.Grab.canceled += EndGrab; 
 
-        // Bind Grab action for holding objects
-        inputActions.Player.Grab.started += StartGrab; // When LMB is pressed
-        inputActions.Player.Grab.canceled += EndGrab; // When LMB is released
-
-        //inputActions.Enable();
         playerCamera = Camera.main;
-    }
-
-    private void OnDestroy()
-    {
-        inputActions.Player.Interact.performed -= InteractItem;
-        inputActions.Player.UseItem.performed -= UseSelectedItem;
-        inputActions.Player.Grab.started -= StartGrab;
-        inputActions.Player.Grab.canceled -= EndGrab;
     }
 
     private void Update()
     {
+        HandleGrabbedObjectMovement();
+        HandleLensEquippedState();
+        HandleLensStamina();
+        HandleRaycast();
+    }
 
-        //Check if player is grabbing an object
+    #region Raycasting
+    private RaycastHit? HandleRaycast()
+    {
+        Ray ray = new Ray(playerCamera.transform.position, playerCamera.transform.forward);
+        RaycastHit hit;
+
+        if (Physics.Raycast(ray, out hit, interactRange))
+        {
+            if (hit.collider.CompareTag("Interactable"))
+            {
+                OutlineEffect outline = hit.collider.GetComponent<OutlineEffect>();
+
+                if (outline != null && currentOutline != outline)
+                {
+                    CheckForOutlineThenDisableCurrentOutline();
+                    currentOutline = outline;
+                    currentOutline.EnableOutline();
+                }
+                return hit; // Return the hit object
+            }
+            else
+            {
+                CheckForOutlineThenDisableCurrentOutline();
+            }
+        }
+        else
+        {
+            CheckForOutlineThenDisableCurrentOutline();
+        }
+
+        return null; // Return null if no interactable object is hit
+    }
+
+    #endregion
+
+    private void HandleGrabbedObjectMovement()
+    {
+        // Check if player is grabbing an object
         if (grabbedObject != null && inputActions.Player.Grab.IsPressed())
         {
             MoveGrabbedObject();
         }
+    }
 
+    private void HandleLensEquippedState()
+    {
+        // Check if the player doesn't have the lens set as their current device
         if (currentlySelectedItem != null && currentlySelectedItem.GetComponent<PlayerDevice>() != null &&
             currentlySelectedItem.GetComponent<PlayerDevice>().itemInstanceInEquipmentSlot == null)
         {
             isLensEquipped = false;
             UpdateGrayscaleEffect();
         }
+    }
 
+    private void HandleLensStamina()
+    {
         if (isLensEquipped)
         {
             DrainLensStamina();
         }
+    }
 
-        Ray ray = new Ray(playerCamera.transform.position, playerCamera.transform.forward);
-        RaycastHit hit;
-        if (Physics.Raycast(ray, out hit, interactRange))
-        {
-            if (hit.collider.CompareTag("Interactable"))
-            {
-                OutlineEffect outline = hit.collider.GetComponent<OutlineEffect>();
-                if (outline != null && currentOutline != outline)
-                {
-                    DisableCurrentOutline();
-                    currentOutline = outline;
-                    currentOutline.EnableOutline();
-                }
-            }
-            else
-            {
-                DisableCurrentOutline();
-            }
-        }
-        else
-        {
-            DisableCurrentOutline();
-        }
-
+    #region Grab
+    private void MoveGrabbedObject()
+    {
+        Vector3 targetPosition = playerCamera.transform.position + playerCamera.transform.forward * grabDistance;
+        grabbedObject.transform.position = Vector3.Lerp(grabbedObject.transform.position, targetPosition, Time.deltaTime * 10f);
     }
 
     public void StartGrab(InputAction.CallbackContext context)
@@ -108,20 +130,16 @@ public class PlayerInteract : MonoBehaviour
         if (grabbedObject != null)
             return;
 
-        // Perform raycast to detect interactable objects
-        Ray ray = new Ray(playerCamera.transform.position, playerCamera.transform.forward);
-        RaycastHit hit;
-        if (Physics.Raycast(ray, out hit, interactRange))
+        // Use HandleRaycast() to perform the raycast and check for interactable objects
+        RaycastHit? hitInfo = HandleRaycast();
+        if (hitInfo.HasValue)
         {
-            if (hit.collider.CompareTag("Interactable"))
-            {
-                grabbedObject = hit.collider.gameObject;
-                grabbedObjectRb = grabbedObject.GetComponent<Rigidbody>();
+            grabbedObject = hitInfo.Value.collider.gameObject;
+            grabbedObjectRb = grabbedObject.GetComponent<Rigidbody>();
 
-                if (grabbedObjectRb != null)
-                {
-                    grabbedObjectRb.isKinematic = true; // Disable physics while grabbing
-                }
+            if (grabbedObjectRb != null)
+            {
+                grabbedObjectRb.isKinematic = true; // Disable physics while grabbing
             }
         }
     }
@@ -141,27 +159,13 @@ public class PlayerInteract : MonoBehaviour
         grabbedObjectRb = null;
     }
 
-    private void MoveGrabbedObject()
-    {
-        Vector3 targetPosition = playerCamera.transform.position + playerCamera.transform.forward * grabDistance;
-        grabbedObject.transform.position = Vector3.Lerp(grabbedObject.transform.position, targetPosition, Time.deltaTime * 10f);
-    }
+    #endregion
 
     private void InteractItem(InputAction.CallbackContext context)
     {
         if (currentOutline != null && currentOutline.CompareTag("Interactable"))
         {
             playerInventory.inventory.AddItem(currentOutline.gameObject.GetComponent<InstanceItemContainer>().item);
-
-            if (currentOutline.name == "Lens")
-            {
-                hasLens = true;
-            }
-            else if (currentOutline.name == "DayNightCycler")
-            {
-                hasDayNightCycler = true;
-            }
-
             Destroy(currentOutline.gameObject);
         }
     }
@@ -178,14 +182,12 @@ public class PlayerInteract : MonoBehaviour
                 if (deviceName == "Lens")
                 {
                     ToggleLens();
+                    UpdateGrayscaleEffect();
+                    return;
                 }
-                else if (deviceName == "DayNightCycler")
+                if (deviceName == "DayNightCycler")
                 {
                     ToggleDayNightCycle();
-                }
-                else if (isLensEquipped)
-                {
-                    ToggleLens();
                 }
             }
         }
@@ -194,10 +196,21 @@ public class PlayerInteract : MonoBehaviour
     private void ToggleLens()
     {
         isLensEquipped = !isLensEquipped;
-        UpdateGrayscaleEffect();
-
     }
 
+    private void UpdateGrayscaleEffect()
+    {
+        if (isLensEquipped)
+        {
+            GrayscaleManager.Instance.GraduallyRestoreColor();
+        }
+        else
+        {
+            GrayscaleManager.Instance.GraduallyApplyGrayscale();
+        }
+    }
+
+    #region Lens Mechanics
     private void DrainLensStamina()
     {
         lensStamina -= lensDrainRate * Time.deltaTime;
@@ -220,6 +233,7 @@ public class PlayerInteract : MonoBehaviour
             }
         }
     }
+    #endregion
 
     private void ToggleDayNightCycle()
     {
@@ -233,7 +247,7 @@ public class PlayerInteract : MonoBehaviour
         }
     }
 
-    private void DisableCurrentOutline()
+    private void CheckForOutlineThenDisableCurrentOutline()
     {
         if (currentOutline != null)
         {
@@ -242,15 +256,5 @@ public class PlayerInteract : MonoBehaviour
         }
     }
 
-    private void UpdateGrayscaleEffect()
-    {
-        if (isLensEquipped)
-        {
-            GrayscaleManager.Instance.GraduallyRestoreColor();
-        }
-        else
-        {
-            GrayscaleManager.Instance.GraduallyApplyGrayscale();
-        }
-    }
+  
 }

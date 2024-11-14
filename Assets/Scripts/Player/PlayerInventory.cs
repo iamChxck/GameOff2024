@@ -25,22 +25,25 @@ public class PlayerInventory : MonoBehaviour
         if (isInventoryOpen)
         {
             Cursor.lockState = CursorLockMode.None;
+            //return;
         }
         else
         {
+
             Cursor.lockState = CursorLockMode.Locked;
         }
     }
 
     private void ToggleInventory()
     {
-        if (PlayerInputActions.Instance.UI.Inventory.triggered)
+        if (InputActionSingleton.Instance.UI.Inventory.triggered)
         {
             Debug.Log("Toggling Inventory");
             if (inventoryDisplay.gameObject.activeInHierarchy)
             {
                 inventoryDisplay.gameObject.SetActive(false);
                 isInventoryOpen = false;
+                //return;
             }
             else
             {
