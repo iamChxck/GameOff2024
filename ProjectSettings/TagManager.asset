@@ -3,7 +3,13 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Interactable
+  - PlayerDevice
+  - SlotDevice
+  - ChargingStation
+  - FleetingShade
+  - Tile
   layers:
   - Default
   - TransparentFX
