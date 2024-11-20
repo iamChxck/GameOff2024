@@ -50,6 +50,7 @@ public class PlayerInteract : MonoBehaviour
     private void Update()
     {
         HandleGrabbedObjectMovement();
+        TurnOffLensWhenStaminaIsDrained();
         HandleLensEquippedState();
         HandleLensStamina();
         HandleRaycast();
@@ -105,6 +106,7 @@ public class PlayerInteract : MonoBehaviour
         if (currentlySelectedItem != null && currentlySelectedItem.GetComponent<PlayerDevice>() != null &&
             currentlySelectedItem.GetComponent<PlayerDevice>().itemInstanceInEquipmentSlot == null)
         {
+            Debug.Log("Deactivating lens");
             isLensEquipped = false;
             UpdateGrayscaleEffect();
         }
@@ -115,6 +117,15 @@ public class PlayerInteract : MonoBehaviour
         if (isLensEquipped)
         {
             DrainLensStamina();
+        }
+    }
+
+    private void TurnOffLensWhenStaminaIsDrained()
+    {
+        if (lensStamina <= 0)
+        {
+            isLensEquipped = false;
+            UpdateGrayscaleEffect();
         }
     }
 

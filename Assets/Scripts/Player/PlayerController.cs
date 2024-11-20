@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviour
     private InputAction jumpAction;
     private InputAction zoomAction;
     private InputAction crouchAction;
+    private InputAction sprintAction;
     #endregion
 
     #region Camera Movement Variables
@@ -147,10 +148,12 @@ public class PlayerController : MonoBehaviour
 
         // Access the input actions
         movementAction = inputActions.Player.Movement;
+              sprintAction = inputActions.Player.Sprint;
         lookAction = inputActions.Player.Look;
         jumpAction = inputActions.Player.Jump;
         zoomAction = inputActions.Player.Zoom;
         crouchAction = inputActions.Player.Crouch;
+  
 
         // Bind the actions to a method
         jumpAction.performed += ctx => Jump();
@@ -234,58 +237,7 @@ public class PlayerController : MonoBehaviour
 
         #region Sprint
 
-        if (enableSprint)
-        {
-            //SEPERATE INTO FUNCTION
-            if (isSprinting)
-            {
-                isZoomed = false;
-                playerCamera.fieldOfView = Mathf.Lerp(playerCamera.fieldOfView, sprintFOV, sprintFOVStepTime * Time.deltaTime);
-
-                // Drain sprint remaining while sprinting
-                if (!unlimitedSprint)
-                {
-                    sprintRemaining -= 1 * Time.deltaTime;
-                    if (sprintRemaining <= 0)
-                    {
-                        isSprinting = false;
-                        isSprintCooldown = true;
-                    }
-                }
-                //return;
-            }
-
-            else
-            {
-                // Regain sprint while not sprinting
-                sprintRemaining = Mathf.Clamp(sprintRemaining += 1 * Time.deltaTime, 0, sprintDuration);
-            }
-
-            // Handles sprint cooldown 
-            // When sprint remaining == 0 stops sprint ability until hitting cooldown
-
-            //SEPERATE INTO FUNCTION
-            if (isSprintCooldown)
-            {
-                sprintCooldown -= 1 * Time.deltaTime;
-                if (sprintCooldown <= 0)
-                {
-                    isSprintCooldown = false;
-                }
-                //return;
-            }
-            else
-            {
-                sprintCooldown = sprintCooldownReset;
-            }
-
-            // Handles sprintBar 
-            if (useSprintBar && !unlimitedSprint)
-            {
-                float sprintRemainingPercent = sprintRemaining / sprintDuration;
-                sprintBar.transform.localScale = new Vector3(sprintRemainingPercent, 1f, 1f);
-            }
-        }
+        HandleSprinting();
 
         #endregion
 
@@ -426,25 +378,30 @@ public class PlayerController : MonoBehaviour
 
         HandleMovement(targetVelocity);
     }
-
-    #region Sprinting
     private Vector3 HandleSprintingMovement(Vector3 velocity)
     {
-        if (enableSprint && Keyboard.current.leftShiftKey.isPressed && sprintRemaining > 0f && !isSprintCooldown)
+        // Check if sprint action is active
+        bool isSprintingInput = sprintAction.ReadValue<float>() > 0f;
+
+        if (enableSprint && isSprintingInput && sprintRemaining > 0f && !isSprintCooldown)
         {
-            velocity = transform.TransformDirection(velocity) * sprintSpeed;
+            velocity = transform.TransformDirection(velocity) * sprintSpeed; // Sprint speed
             isSprinting = true;
-            if (isCrouched) Crouch();
-            sprintBarCG.alpha += 5 * Time.deltaTime;
+            if (isCrouched) Crouch(); // Ensure crouch is handled
+            sprintBarCG.alpha += 5 * Time.deltaTime; // Update sprint bar
         }
         else
         {
-            velocity = transform.TransformDirection(velocity) * walkSpeed;
+            velocity = transform.TransformDirection(velocity) * walkSpeed; // Walking speed
             isSprinting = false;
-            if (sprintBarCG.alpha > 0 && hideBarWhenFull) sprintBarCG.alpha -= 3 * Time.deltaTime;
+            if (sprintBarCG.alpha > 0 && hideBarWhenFull) sprintBarCG.alpha -= 3 * Time.deltaTime; // Hide sprint bar
         }
+
         return velocity;
     }
+
+    #region Sprinting
+
 
     private void HandleSprinting()
     {
