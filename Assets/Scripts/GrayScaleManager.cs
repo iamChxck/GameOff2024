@@ -14,6 +14,8 @@ public class GrayscaleManager : MonoBehaviour
     private List<Renderer> targetRenderers; // List of Renderers to modify
     private Coroutine currentCoroutine;
 
+    public List<string> restoredColors;
+
     private void Awake()
     {
         // Implement Singleton pattern
@@ -48,6 +50,15 @@ public class GrayscaleManager : MonoBehaviour
                 Debug.LogWarning($"No Renderer found on {gameObject.name} or its children.");
             }
         }
+    }
+
+    private void Start()
+    {
+        // Set grayscaleAmount to 1f to apply full grayscale at the start
+        grayscaleAmount = 1f;
+
+        // Ensure that grayscale is applied to all objects at the start
+        UpdateGrayscaleAmount();
     }
 
     void Update()
@@ -107,17 +118,27 @@ public class GrayscaleManager : MonoBehaviour
         {
             if (renderer != null)
             {
-                Material material = renderer.material;
+                // Check if the GameObject's tag is in the excludedTags list
+                if (restoredColors.Contains(renderer.gameObject.tag))
+                {
+                    // Set grayscale to 0 for objects with tags in the excludedTags list
+                    Material material = renderer.material;
+                    if (material.HasProperty("_GrayscaleAmount"))
+                        material.SetFloat("_GrayscaleAmount", 0f);
+                    continue; // Skip applying the general grayscale effect
+                }
+
+                // Apply grayscale to the renderer as usual
+                Material mat = renderer.material;
 
                 // Set the BaseColor to red if no texture is assigned
-                if (material.HasProperty("_BaseColor") && !material.HasProperty("_MainTex"))
-                    material.SetColor("_BaseColor", Color.red);
+                if (mat.HasProperty("_BaseColor") && !mat.HasProperty("_MainTex"))
+                    mat.SetColor("_BaseColor", Color.red);
 
                 // Set the _GrayscaleAmount property if it exists on the material
-                if (material.HasProperty("_GrayscaleAmount"))
-                    material.SetFloat("_GrayscaleAmount", grayscaleAmount);
+                if (mat.HasProperty("_GrayscaleAmount"))
+                    mat.SetFloat("_GrayscaleAmount", grayscaleAmount);
             }
         }
     }
-
 }
