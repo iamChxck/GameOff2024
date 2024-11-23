@@ -96,8 +96,10 @@ public class PlayerController : MonoBehaviour
     public float jumpPower = 5f;
 
     // Internal Variables
+    [SerializeField]
     private bool isGrounded = false;
-
+    [SerializeField] 
+    private Transform playerFeet;
     #endregion
 
     #region Crouch
@@ -270,14 +272,21 @@ public class PlayerController : MonoBehaviour
     // Sets isGrounded based on a raycast sent straigth down from the player object
     private void CheckGround()
     {
-        Vector3 origin = transform.position + Vector3.down * (transform.localScale.y * 0.5f);
-        isGrounded = Physics.Raycast(origin, Vector3.down, out RaycastHit hit, 0.75f);
-        Debug.DrawRay(origin, Vector3.down * 0.75f, isGrounded ? Color.green : Color.red);
+        if (playerFeet == null)
+        {
+            Debug.LogError("PlayerFeet object is not assigned!");
+            return;
+        }
+        Vector3 origin = playerFeet.position;
+        isGrounded = Physics.Raycast(origin, Vector3.down, out RaycastHit hit, 0.5f);
+        Debug.DrawRay(origin, Vector3.down * 0.5f, isGrounded ? Color.green : Color.red);
     }
+
 
 
     private void Jump()
     {
+        Debug.Log("Jumping");
         // Adds force to the player rigidbody to jump
         if (isGrounded)
         {

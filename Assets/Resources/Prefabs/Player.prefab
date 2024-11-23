@@ -37,10 +37,11 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 2, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 3, y: 3, z: 3}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 4459864851508666808}
+  - {fileID: 3051347639527551497}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &4459864850019384739
@@ -171,7 +172,7 @@ MonoBehaviour:
   zoomStepTime: 5
   isZoomed: 0
   playerCanMove: 1
-  walkSpeed: 5
+  walkSpeed: 15
   maxVelocityChange: 10
   enableSprint: 1
   unlimitedSprint: 1
@@ -187,7 +188,9 @@ MonoBehaviour:
   sprintBarWidthPercent: 0.3
   sprintBarHeightPercent: 0.02
   enableJump: 1
-  jumpPower: 5
+  jumpPower: 50
+  isGrounded: 0
+  playerFeet: {fileID: 3051347639527551497}
   enableCrouch: 1
   holdToCrouch: 1
   crouchHeight: 0.75
@@ -253,6 +256,7 @@ MonoBehaviour:
   inventory: {fileID: 11400000, guid: c9d8daa691a578241b6cbda18be3b324, type: 2}
   inventoryDisplay: {fileID: 0}
   isInventoryOpen: 0
+  hasKey: 0
 --- !u!114 &5159452002218359760
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -266,6 +270,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentlySelectedItem: {fileID: 0}
+  grabDistance: 7
 --- !u!114 &5581973379384540499
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -278,7 +283,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 034626aaa8f812241a2003f36d0da1e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactRange: 3
+  interactRange: 8
   currentOutline: {fileID: 0}
 --- !u!114 &5771666333905882011
 MonoBehaviour:
@@ -294,7 +299,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isLensEquipped: 0
   lensStamina: 100
-  lensDrainRate: 25
+  lensDrainRate: 10
   lensRegenRate: 10
 --- !u!1 &4459864850190357393
 GameObject:
@@ -781,3 +786,34 @@ MonoBehaviour:
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
   m_PresetInfoIsWorld: 0
+--- !u!1 &7059842059051911083
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3051347639527551497}
+  m_Layer: 0
+  m_Name: PlayerFeet
+  m_TagString: Untagged
+  m_Icon: {fileID: 7174288486110832750, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3051347639527551497
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7059842059051911083}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -1, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4459864850019384738}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
