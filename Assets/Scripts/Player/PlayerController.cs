@@ -254,8 +254,8 @@ public class PlayerController : MonoBehaviour
         if (!cameraCanMove) return;
 
         lookInput = lookAction.ReadValue<Vector2>();
-        yaw += lookInput.x * mouseSensitivity;
-        pitch = Mathf.Clamp(pitch + (invertCamera ? lookInput.y : -lookInput.y) * mouseSensitivity, -maxLookAngle, maxLookAngle);
+        yaw += lookInput.x * mouseSensitivity * Time.deltaTime;
+        pitch = Mathf.Clamp(pitch + (invertCamera ? lookInput.y : -lookInput.y) * mouseSensitivity * Time.deltaTime, -maxLookAngle, maxLookAngle);
 
         ApplyCameraRotation();
     }

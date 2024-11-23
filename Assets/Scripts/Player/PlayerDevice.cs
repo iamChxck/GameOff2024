@@ -61,7 +61,7 @@ public class PlayerDevice : MonoBehaviour, IDropHandler, IPointerEnterHandler, I
                 // Update currentlySelectedItem in PlayerInteract
                 if (playerInteract != null)
                 {
-                    playerInteract.currentlySelectedItem = itemInstanceInEquipmentSlot != null ? gameObject : null;
+                    //playerInteract.currentlySelectedItem = itemInstanceInEquipmentSlot != null ? gameObject : null;
                 }
 
                 // Remove the item from the DynamicInventory
@@ -71,16 +71,16 @@ public class PlayerDevice : MonoBehaviour, IDropHandler, IPointerEnterHandler, I
     }
 
 
-    public void ResetSlot()
-    {
-        itemInstanceInEquipmentSlot = null;
-        itemCategory = null;
-        equipmentImage.sprite = null;
+    //public void ResetSlot()
+    //{
+    //    itemInstanceInEquipmentSlot = null;
+    //    itemCategory = null;
+    //    equipmentImage.sprite = null;
 
-        // Clear currentlySelectedItem in PlayerInteract
-        if (playerInteract != null)
-        {
-            playerInteract.currentlySelectedItem = null;
-        }
-    }
+    //    // Clear currentlySelectedItem in PlayerInteract
+    //    if (playerInteract != null)
+    //    {
+    //        playerInteract.currentlySelectedItem = null;
+    //    }
+    //}
 }

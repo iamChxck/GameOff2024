@@ -15,7 +15,7 @@ public class PlayerInventory : MonoBehaviour
     }
     private void Start()
     {
-        inventoryDisplay.gameObject.SetActive(false);
+        //inventoryDisplay.gameObject.SetActive(false);
     }
 
     private void Update()
@@ -52,8 +52,4 @@ public class PlayerInventory : MonoBehaviour
             }
         }
     }
-
-
-
-
 }
