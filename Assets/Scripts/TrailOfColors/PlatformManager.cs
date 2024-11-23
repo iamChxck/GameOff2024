@@ -24,10 +24,16 @@ public class PlatformManager : MonoBehaviour
         new int[] { 3,7,11,10,9,8,12,16 }
     };
 
+    private void Awake()
+    {
+        playerController = FindObjectOfType<PlayerController>();
+    }
+
     // Start is called before the first frame update
     void Start()
     {
         RandomizePlatformPattern();
+
     }
 
     void RandomizePlatformPattern()

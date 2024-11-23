@@ -11,8 +11,10 @@ GameObject:
   - component: {fileID: 1591701861368404650}
   - component: {fileID: 2472289830065200218}
   - component: {fileID: 5624354322935586644}
+  - component: {fileID: 7022393866979361892}
   - component: {fileID: 9052717053285474256}
   - component: {fileID: 180703893865613816}
+  - component: {fileID: 4271111383424797020}
   m_Layer: 0
   m_Name: Key
   m_TagString: Interactable
@@ -85,7 +87,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!135 &9052717053285474256
+--- !u!135 &7022393866979361892
 SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -101,6 +103,27 @@ SphereCollider:
     m_Bits: 0
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.5
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!135 &9052717053285474256
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8252414360617579862}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -123,3 +146,16 @@ MonoBehaviour:
     name: 
     description: 
     itemGameObject: {fileID: 0}
+  inventory: {fileID: 0}
+--- !u!114 &4271111383424797020
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8252414360617579862}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31f59997d76776d49beb9432006e4d70, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

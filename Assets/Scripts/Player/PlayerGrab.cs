@@ -12,7 +12,8 @@ public class PlayerGrab : MonoBehaviour
     #region Grab Variables
     private GameObject grabbedObject;
     private Rigidbody grabbedObjectRb;
-    private float grabDistance = 2f;
+    [SerializeField]
+    private float grabDistance = 7f;
     #endregion
 
     private void Awake()
