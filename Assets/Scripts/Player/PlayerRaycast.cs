@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerRaycast : MonoBehaviour
@@ -9,7 +7,6 @@ public class PlayerRaycast : MonoBehaviour
     [SerializeField] private float interactRange = 3f;
 
     private Camera playerCamera;
-
     public OutlineEffect currentOutline;
 
     private void Awake()
@@ -20,10 +17,11 @@ public class PlayerRaycast : MonoBehaviour
 
     void Update()
     {
-        HandleRaycast();
+        PerformRaycast(); // Keep this logic internal
     }
 
-    public RaycastHit? HandleRaycast()
+    // Internal raycasting logic
+    private RaycastHit? PerformRaycast()
     {
         Ray ray = new Ray(playerCamera.transform.position, playerCamera.transform.forward);
         RaycastHit hit;
@@ -33,7 +31,7 @@ public class PlayerRaycast : MonoBehaviour
             if (hit.collider.CompareTag("Interactable"))
             {
                 OutlineEffect outline = hit.collider.GetComponent<OutlineEffect>();
-                
+
                 if (outline != null && currentOutline != outline)
                 {
                     CheckForOutlineThenDisableCurrentOutline();
@@ -47,12 +45,20 @@ public class PlayerRaycast : MonoBehaviour
                 CheckForOutlineThenDisableCurrentOutline();
             }
         }
+
         else
         {
             CheckForOutlineThenDisableCurrentOutline();
         }
 
         return null;
+    }
+
+    // Public method for other scripts to access the raycast result
+    public GameObject GetRaycastedObject()
+    {
+        RaycastHit? hitInfo = PerformRaycast();
+        return hitInfo?.collider.gameObject;
     }
 
     private void CheckForOutlineThenDisableCurrentOutline()

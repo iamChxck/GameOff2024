@@ -17,6 +17,9 @@ GameObject:
   - component: {fileID: 4405396716089494647}
   - component: {fileID: 6973729800085310387}
   - component: {fileID: 2325285826528948008}
+  - component: {fileID: 5159452002218359760}
+  - component: {fileID: 5581973379384540499}
+  - component: {fileID: 5771666333905882011}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -156,7 +159,7 @@ MonoBehaviour:
   fov: 60
   invertCamera: 0
   cameraCanMove: 1
-  mouseSensitivity: 2
+  mouseSensitivity: 5
   maxLookAngle: 50
   lockCursor: 1
   crosshair: 1
@@ -164,15 +167,14 @@ MonoBehaviour:
   crosshairColor: {r: 1, g: 1, b: 1, a: 1}
   enableZoom: 1
   holdToZoom: 1
-  zoomKey: 324
   zoomFOV: 30
   zoomStepTime: 5
+  isZoomed: 0
   playerCanMove: 1
   walkSpeed: 5
   maxVelocityChange: 10
   enableSprint: 1
   unlimitedSprint: 1
-  sprintKey: 304
   sprintSpeed: 7
   sprintDuration: 5
   sprintCooldown: 0.5
@@ -185,11 +187,9 @@ MonoBehaviour:
   sprintBarWidthPercent: 0.3
   sprintBarHeightPercent: 0.02
   enableJump: 1
-  jumpKey: 32
   jumpPower: 5
   enableCrouch: 1
   holdToCrouch: 1
-  crouchKey: 306
   crouchHeight: 0.75
   speedReduction: 0.5
   enableHeadBob: 1
@@ -222,7 +222,7 @@ MonoBehaviour:
       m_Calls: []
   m_ActionEvents: []
   m_NeverAutoSwitchControlSchemes: 0
-  m_DefaultControlScheme: Keyboard&Mouse
+  m_DefaultControlScheme: 
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 4459864851310106426}
@@ -238,15 +238,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30f7e34d333d0c74d8185fc9daabf8a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentlySelectedItem: {fileID: 0}
-  playerInventory: {fileID: 0}
-  interactRange: 3
-  hasLens: 0
-  hasDayNightCycler: 0
-  isLensEquipped: 0
-  lensStamina: 100
-  lensDrainRate: 10
-  lensRegenRate: 10
 --- !u!114 &2325285826528948008
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -262,6 +253,49 @@ MonoBehaviour:
   inventory: {fileID: 11400000, guid: c9d8daa691a578241b6cbda18be3b324, type: 2}
   inventoryDisplay: {fileID: 0}
   isInventoryOpen: 0
+--- !u!114 &5159452002218359760
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4459864850019384750}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe92c6502d583dc45b3939eac9436d33, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentlySelectedItem: {fileID: 0}
+--- !u!114 &5581973379384540499
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4459864850019384750}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 034626aaa8f812241a2003f36d0da1e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interactRange: 3
+  currentOutline: {fileID: 0}
+--- !u!114 &5771666333905882011
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4459864850019384750}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 614e79d6aff3ea34b915e07390bf4e5e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isLensEquipped: 0
+  lensStamina: 100
+  lensDrainRate: 25
+  lensRegenRate: 10
 --- !u!1 &4459864850190357393
 GameObject:
   m_ObjectHideFlags: 0

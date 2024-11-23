@@ -9,15 +9,10 @@ public class PlayerDevice : MonoBehaviour, IDropHandler, IPointerEnterHandler, I
     public Image equipmentImage;
     public bool isHovered;
 
-    private PlayerInteract playerInteract;
-
-    void Awake()
+    private void Awake()
     {
         // Ensure the child object exists before getting the Image component
         equipmentImage = transform.GetChild(0)?.GetComponent<Image>();
-
-        // Get reference to PlayerInteract
-        playerInteract = FindObjectOfType<PlayerInteract>();
     }
 
     public void OnPointerEnter(PointerEventData eventData)
@@ -55,32 +50,44 @@ public class PlayerDevice : MonoBehaviour, IDropHandler, IPointerEnterHandler, I
         {
             if (gameObject.tag == "SlotDevice")
             {
-                equipmentImage.sprite = draggableItem.itemImage.sprite;
-                itemInstanceInEquipmentSlot = FindObjectOfType<InventoryDisplay>().inventory.items[draggableItem.GetComponentInParent<ItemDisplay>().itemIndex];
-
-                // Update currentlySelectedItem in PlayerInteract
-                if (playerInteract != null)
+                // Check if there's an existing item in the equipment slot
+                if (itemInstanceInEquipmentSlot != null)
                 {
-                    //playerInteract.currentlySelectedItem = itemInstanceInEquipmentSlot != null ? gameObject : null;
+                    // If there is an existing item, return it to the inventory first
+                    bool itemAdded = FindObjectOfType<PlayerInventory>().inventory.AddItem(itemInstanceInEquipmentSlot);
+                    if (!itemAdded)
+                    {
+                        Debug.LogWarning("Failed to add item back to the inventory!");
+                    }
                 }
 
+                // Update equipment slot with the new item
+                equipmentImage.sprite = draggableItem.itemImage.sprite;
+                itemInstanceInEquipmentSlot = FindObjectOfType<InventoryDisplay>().inventory.items[
+                    draggableItem.GetComponentInParent<ItemDisplay>().itemIndex];
+
+                // Update currentlySelectedItem in PlayerDeviceController
+                PlayerDeviceController.currentlySelectedItem = gameObject;
+
                 // Remove the item from the DynamicInventory
-                FindObjectOfType<PlayerInventory>().inventory.RemoveItem(draggableItem.gameObject.GetComponentInParent<ItemDisplay>().itemIndex);
+                FindObjectOfType<PlayerInventory>().inventory.RemoveItem(
+                    draggableItem.gameObject.GetComponentInParent<ItemDisplay>().itemIndex);
             }
         }
     }
 
 
-    //public void ResetSlot()
-    //{
-    //    itemInstanceInEquipmentSlot = null;
-    //    itemCategory = null;
-    //    equipmentImage.sprite = null;
+    public void ResetSlot()
+    {
+        // Clear the slot
+        itemInstanceInEquipmentSlot = null;
+        itemCategory = null;
+        equipmentImage.sprite = null;
 
-    //    // Clear currentlySelectedItem in PlayerInteract
-    //    if (playerInteract != null)
-    //    {
-    //        playerInteract.currentlySelectedItem = null;
-    //    }
-    //}
+        // Clear currentlySelectedItem in PlayerDeviceController
+        if (PlayerDeviceController.currentlySelectedItem == gameObject)
+        {
+            PlayerDeviceController.currentlySelectedItem = null;
+        }
+    }
 }

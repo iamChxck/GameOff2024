@@ -1,9 +1,12 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
-public class InstanceItemContainer : MonoBehaviour
+public class InstanceItemContainer : Interactables
 {
     public ItemInstance item;
 
+    [SerializeField]
+    private PlayerInventory inventory;
 
 
     private void Awake()
@@ -12,10 +15,14 @@ public class InstanceItemContainer : MonoBehaviour
 
     private void Start()
     {
+
         InitItem();
-
-
         UpdateItem();
+    }
+
+    public override void Interact()
+    {
+        TakeItem();
     }
 
     public void InitItem()
@@ -31,7 +38,11 @@ public class InstanceItemContainer : MonoBehaviour
 
     public ItemInstance TakeItem()
     {
+        inventory = FindObjectOfType<PlayerInventory>();
         Destroy(gameObject);
+        inventory.inventory.AddItem(item);
         return item;
     }
+
+
 }

@@ -4,15 +4,15 @@ public class ChargingStation : MonoBehaviour
 {
     private void OnTriggerStay(Collider other)
     {
-        //if (other.CompareTag("Player"))
-        //{
-        //    PlayerInteract playerInteract = other.GetComponent<PlayerInteract>();
+        if (other.CompareTag("Player"))
+        {
+            PlayerDeviceController playerDevice = other.GetComponent<PlayerDeviceController>();
 
-        //    // Ensure the player has PlayerInteract and the lens is unequipped
-        //    if (playerInteract != null && !playerInteract.isLensEquipped)
-        //    {
-        //        playerInteract.RegenerateLensStamina(); // Call regeneration method
-        //    }
-        //}
+            // Ensure the player has PlayerInteract and the lens is unequipped
+            if (playerDevice != null && !playerDevice.isLensEquipped)
+            {
+                playerDevice.RegenerateLensStamina(); // Call regeneration method
+            }
+        }
     }
 }
