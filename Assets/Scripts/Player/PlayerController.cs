@@ -129,6 +129,8 @@ public class PlayerController : MonoBehaviour
 
     #endregion
 
+    [SerializeField] Animator playerAnimator;
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
@@ -462,6 +464,9 @@ public class PlayerController : MonoBehaviour
     private void HandleMovement(Vector3 targetVelocity)
     {
         Vector3 velocityChange = CalculateVelocityChange(targetVelocity);
+
+        playerAnimator.SetBool("IsWalking", velocityChange != Vector3.zero);
+
         rb.AddForce(velocityChange, ForceMode.VelocityChange);
     }
 
