@@ -8,6 +8,8 @@ public class ChromaticPair : MonoBehaviour
 
     public bool redCubeOnTile = false, yellowCubeOnTile = false, blueCubeOnTile = false;
 
+    public string colorToRestore = "Green";
+
     private void Start()
     {
         // Initialization - no changes needed here
@@ -37,5 +39,6 @@ public class ChromaticPair : MonoBehaviour
     {
         // Door opening logic (could be opening a door, animating, etc.)
         door.SetActive(false);
+        PuzzleManager.instance.OnPuzzleCompletion(colorToRestore);
     }
 }

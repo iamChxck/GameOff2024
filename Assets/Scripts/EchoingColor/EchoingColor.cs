@@ -14,6 +14,8 @@ public class EchoingColor : MonoBehaviour
     private int currentTileIndex = 0;
     public List<MeshRenderer> steppedOnTiles = new List<MeshRenderer>();  // Track the tiles the player has stepped on
 
+    public string colorToRestore = "Red";
+
     void Start()
     {
         // Get references to the door's patterns
@@ -210,6 +212,8 @@ public class EchoingColor : MonoBehaviour
 
         // Disable the tile colliders after the door opens
         DisableTileColliders();
+
+        PuzzleManager.instance.OnPuzzleCompletion(colorToRestore);
     }
 
     void DisableTileColliders()
