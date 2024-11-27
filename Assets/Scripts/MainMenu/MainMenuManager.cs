@@ -4,18 +4,13 @@ using UnityEngine.SceneManagement;
 
 public class MainMenuManager : MonoBehaviour
 {
-    public void StartGame()
+    private void Start()
     {
-        StartCoroutine(StartTransitionPanelAnimation());
+        AudioManager.instance.PlayMusic("MainMusic");
     }
 
-    IEnumerator StartTransitionPanelAnimation() {
-        if (TransitionPanel.instance != null) {
-            TransitionPanel.instance.FadeOutTransition();
-        }
-
-        yield return new WaitForSeconds(1);
-
-        SceneManager.LoadScene("GrayscaleTestScene");
+    public void StartGame()
+    {
+        StartCoroutine(TransitionPanel.instance.StartTransitionPanelAnimation("GameScene"));
     }
 }
