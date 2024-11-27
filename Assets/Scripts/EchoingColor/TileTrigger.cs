@@ -7,8 +7,6 @@ public class TileTrigger : MonoBehaviour
 
     private void Start()
     {
-        // Set the tile color based on the GameObject's name
-        tileColor = gameObject.name;
 
         // Cache the ChromaticPair component reference for better performance
         chromaticPair = FindObjectOfType<EchoingColor>();

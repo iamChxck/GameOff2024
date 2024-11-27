@@ -13,9 +13,6 @@ public class EchoingColor : MonoBehaviour
 
     private int currentTileIndex = 0;
     public List<MeshRenderer> steppedOnTiles = new List<MeshRenderer>();  // Track the tiles the player has stepped on
-
-    public string colorToRestore = "Red";
-
     void Start()
     {
         // Get references to the door's patterns
@@ -24,9 +21,9 @@ public class EchoingColor : MonoBehaviour
         pattern3Renderer = door.transform.Find("Pattern/Pattern 3").GetComponent<MeshRenderer>();
 
         // Load the materials from Resources
-        redTileMaterial = Resources.Load<Material>("Materials/EchoingColor/RedTile");
-        blueTileMaterial = Resources.Load<Material>("Materials/EchoingColor/BlueTile");
-        yellowTileMaterial = Resources.Load<Material>("Materials/EchoingColor/YellowTile");
+        redTileMaterial = Resources.Load<Material>("Materials/ColorMaterials/Red");
+        blueTileMaterial = Resources.Load<Material>("Materials/ColorMaterials/Blue");
+        yellowTileMaterial = Resources.Load<Material>("Materials/ColorMaterials/Yellow");
 
         tileMaterials.Add(redTileMaterial);
         tileMaterials.Add(blueTileMaterial);
@@ -99,13 +96,13 @@ public class EchoingColor : MonoBehaviour
 
         switch (tileColor.ToLower())  // Convert tileColor to lowercase for comparison
         {
-            case "redtile": // Use lowercase name if tiles are named "RedTile", "BlueTile", "YellowTile"
+            case "red": // Use lowercase name if tiles are named "RedTile", "BlueTile", "YellowTile"
                 selectedMaterial = redTileMaterial;
                 break;
-            case "bluetile":
+            case "blue":
                 selectedMaterial = blueTileMaterial;
                 break;
-            case "yellowtile":
+            case "yellow":
                 selectedMaterial = yellowTileMaterial;
                 break;
             default:
@@ -151,11 +148,11 @@ public class EchoingColor : MonoBehaviour
         foreach (MeshRenderer tileRenderer in steppedOnTiles)
         {
             // Reset tile material to its original color
-            if (tileRenderer.name.Contains("RedTile"))
+            if (tileRenderer.name.Contains("Red"))
                 tileRenderer.material = redTileMaterial;
-            else if (tileRenderer.name.Contains("BlueTile"))
+            else if (tileRenderer.name.Contains("Blue"))
                 tileRenderer.material = blueTileMaterial;
-            else if (tileRenderer.name.Contains("YellowTile"))
+            else if (tileRenderer.name.Contains("Yellow"))
                 tileRenderer.material = yellowTileMaterial;
         }
 
@@ -168,11 +165,11 @@ public class EchoingColor : MonoBehaviour
         // Returns the correct tile renderer based on the color
         switch (tileColor.ToLower())  // Make sure tileColor matches the exact names
         {
-            case "redtile":
+            case "red":
                 return tiles.transform.Find("RedTile")?.GetComponent<MeshRenderer>();
-            case "bluetile":
+            case "blue":
                 return tiles.transform.Find("BlueTile")?.GetComponent<MeshRenderer>();
-            case "yellowtile":
+            case "yellow":
                 return tiles.transform.Find("YellowTile")?.GetComponent<MeshRenderer>();
             default:
                 Debug.LogError("Unknown tile color: " + tileColor);
@@ -213,7 +210,6 @@ public class EchoingColor : MonoBehaviour
         // Disable the tile colliders after the door opens
         DisableTileColliders();
 
-        PuzzleManager.instance.OnPuzzleCompletion(colorToRestore);
     }
 
     void DisableTileColliders()

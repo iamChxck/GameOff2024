@@ -130,6 +130,7 @@ public class PlayerController : MonoBehaviour
     #endregion
 
     [SerializeField] Animator playerAnimator;
+    [SerializeField] private float gravityMultiplier = 1f;
 
     private void Awake()
     {
@@ -253,6 +254,10 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+
+
+  
+
     private void HandleCameraMovement()
     {
         if (!cameraCanMove) return;
@@ -271,7 +276,6 @@ public class PlayerController : MonoBehaviour
     }
 
 
-    // Sets isGrounded based on a raycast sent straigth down from the player object
     private void CheckGround()
     {
         if (playerFeet == null)
@@ -279,9 +283,32 @@ public class PlayerController : MonoBehaviour
             Debug.LogError("PlayerFeet object is not assigned!");
             return;
         }
+
         Vector3 origin = playerFeet.position;
-        isGrounded = Physics.Raycast(origin, Vector3.down, out RaycastHit hit, 0.5f);
-        Debug.DrawRay(origin, Vector3.down * 0.5f, isGrounded ? Color.green : Color.red);
+        float sphereRadius = 0.3f;
+
+        // OverlapSphere to detect all colliders within the sphere
+        Collider[] colliders = Physics.OverlapSphere(origin, sphereRadius);
+        isGrounded = false;
+
+        foreach (Collider collider in colliders)
+        {
+            // Ignore the player's own collider
+            if (collider.gameObject != gameObject)
+            {
+                isGrounded = true;
+                break;
+            }
+        }
+
+        // For debugging: Visualize the sphere in the Scene view
+        Color debugColor = isGrounded ? Color.green : Color.red;
+        Debug.DrawRay(origin, Vector3.down * sphereRadius, debugColor);
+        if (!isGrounded)
+        {
+            Debug.DrawLine(origin + Vector3.left * sphereRadius, origin + Vector3.right * sphereRadius, debugColor);
+            Debug.DrawLine(origin + Vector3.forward * sphereRadius, origin + Vector3.back * sphereRadius, debugColor);
+        }
     }
 
 
@@ -388,7 +415,26 @@ public class PlayerController : MonoBehaviour
         targetVelocity = HandleSprintingMovement(targetVelocity);
 
         HandleMovement(targetVelocity);
+
+        AdjustGravity();
     }
+
+    public void AdjustGravity()
+    {
+        if (rb == null)
+        {
+            Debug.LogError("Rigidbody is not assigned!");
+            return;
+        }
+
+        // Scale gravity based on player scale
+        float scaleFactor = transform.localScale.y; // Use the vertical scale for simplicity
+        Vector3 adjustedGravity = Physics.gravity * gravityMultiplier * scaleFactor;
+
+        // Apply the adjusted gravity
+        rb.AddForce(adjustedGravity, ForceMode.Acceleration);
+    }
+
     private Vector3 HandleSprintingMovement(Vector3 velocity)
     {
         // Check if sprint action is active

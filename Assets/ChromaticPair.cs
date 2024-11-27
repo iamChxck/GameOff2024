@@ -39,6 +39,5 @@ public class ChromaticPair : MonoBehaviour
     {
         // Door opening logic (could be opening a door, animating, etc.)
         door.SetActive(false);
-        PuzzleManager.instance.OnPuzzleCompletion(colorToRestore);
     }
 }
