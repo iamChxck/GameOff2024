@@ -58,7 +58,7 @@ public class PlayerGrab : MonoBehaviour
             return;
 
         GameObject raycastedObject = PlayerRaycast.instance.GetRaycastedObject();
-        if (raycastedObject != null)
+        if (raycastedObject != null && raycastedObject.layer == LayerMask.NameToLayer("Draggable"))
         {
             grabbedObject = raycastedObject;
             grabbedObjectRb = grabbedObject.GetComponent<Rigidbody>();

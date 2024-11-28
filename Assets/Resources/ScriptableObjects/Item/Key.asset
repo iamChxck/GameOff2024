@@ -15,5 +15,5 @@ MonoBehaviour:
   itemName: Key
   itemCategory: Useable Item
   itemDescription: Opens a door
-  modelPrefab: {fileID: 8252414360617579862, guid: 9c5ef90c011c79f4bb6274f171bbf86e, type: 3}
-  icon: {fileID: 21300000, guid: c6c5e5ea24fcf0a41a666d1e1ffa054c, type: 3}
+  modelPrefab: {fileID: 8357075009072042517, guid: 9c5ef90c011c79f4bb6274f171bbf86e, type: 3}
+  icon: {fileID: 21300000, guid: ea6761532ee6bf547878657725e26c96, type: 3}
