@@ -4,6 +4,8 @@ using UnityEngine.SceneManagement;
 
 public class MainMenuManager : MonoBehaviour
 {
+    [SerializeField] GameObject settingsPanelGO;
+
     private void Start()
     {
         AudioManager.instance.PlayMusic("MainMusic");
@@ -12,5 +14,10 @@ public class MainMenuManager : MonoBehaviour
     public void StartGame()
     {
         StartCoroutine(TransitionPanel.instance.StartTransitionPanelAnimation("GameScene"));
+    }
+
+    public void ToggleSettings()
+    {
+        settingsPanelGO.SetActive(!settingsPanelGO.activeSelf);
     }
 }

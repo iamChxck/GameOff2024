@@ -9,8 +9,7 @@ public class PlatformManager : MonoBehaviour
     public PlayerController playerController;
 
     public GameObject[] platforms;
-    
-    public Material normalIndicatorMaterial;
+
     public Material zoomedIndicatorMaterial;
 
     int pathPatternSelected = 0;
@@ -47,28 +46,7 @@ public class PlatformManager : MonoBehaviour
         {
             // Enables the meshcollider for a walkable path
             platforms[possiblePaths[index][i]].GetComponent<MeshCollider>().enabled = true;
-        }
-    }
-
-    private void Update()
-    {
-        CheckIfZoomed();
-    }
-
-    void CheckIfZoomed()
-    {
-        if (playerController.isZoomed)
-        {
-            for (int i = 0; i < possiblePaths[pathPatternSelected].Length; i++)
-            {
-                platforms[possiblePaths[pathPatternSelected][i]].GetComponent<Renderer>().material = zoomedIndicatorMaterial;
-            }
-            return;
-        }
-
-        for (int i = 0; i < possiblePaths[pathPatternSelected].Length; i++)
-        {
-            platforms[possiblePaths[pathPatternSelected][i]].GetComponent<Renderer>().material = normalIndicatorMaterial;
+            platforms[possiblePaths[index][i]].GetComponent<Renderer>().material = zoomedIndicatorMaterial;
         }
     }
 }
