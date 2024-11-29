@@ -115,26 +115,36 @@ public class GrayscaleManager : MonoBehaviour
     {
         targetMaterials = new List<Material>();
 
-        // Load all materials in the entire Resources folder
-        Material[] allMaterials = Resources.LoadAll<Material>("");
+        Material[] materialsInFolder = Resources.LoadAll<Material>("Materials");
 
-        if (allMaterials.Length == 0)
+        if (materialsInFolder.Length == 0)
         {
-            Debug.LogWarning("No materials found in the Resources folder.");
+            Debug.LogWarning("No materials found in Resources/Materials or its subfolders.");
             return;
         }
 
-        // Filter materials to include only those in the Materials folder or its subfolders
+        targetMaterials.AddRange(materialsInFolder);
+        Debug.Log($"Loaded {targetMaterials.Count} materials from Resources/Materials and its subfolders.");
+    }
+
+    public void RestoreAllColors()
+    {
+        Material[] allMaterials = Resources.LoadAll<Material>("Materials");
+
         foreach (var material in allMaterials)
         {
-            string materialPath = UnityEditor.AssetDatabase.GetAssetPath(material); // This line works only in the editor
-            if (materialPath.Contains("/Materials/")) // Ensure it's in the Materials folder or its subfolders
+            if (material != null && material.HasProperty("_GrayscaleAmount"))
             {
-                targetMaterials.Add(material);
+                material.SetFloat("_GrayscaleAmount", 0f);
+
+                if (!restoredColors.Contains(material.name))
+                {
+                    restoredColors.Add(material.name);
+                }
             }
         }
 
-        Debug.Log($"Loaded {targetMaterials.Count} materials from Resources/Materials and subfolders.");
+        Debug.Log($"Restored color for {allMaterials.Length} materials and updated restoredColors list.");
     }
 
 }

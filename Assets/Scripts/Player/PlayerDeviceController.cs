@@ -31,6 +31,15 @@ public class PlayerDeviceController : MonoBehaviour
 
     private void Update()
     {
+
+        if (currentlySelectedItem != null)
+        {
+            Debug.Log($"Currently Selected Item: {currentlySelectedItem.name}");
+        }
+        else
+        {
+            Debug.Log("No item is currently selected.");
+        }
         HandleLensEquippedState();
         HandleLensStamina();
         TurnOffLensWhenStaminaIsDrained();
