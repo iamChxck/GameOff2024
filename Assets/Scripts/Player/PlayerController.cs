@@ -252,11 +252,20 @@ public class PlayerController : MonoBehaviour
         {
             HeadBob();
         }
+
+        PlayWalkSFX();
     }
 
+    void PlayWalkSFX()
+    {
+        if(isWalking)
+        {
+            AudioManager.instance.PlayWalkSFX();
+            return;
+        }
 
-
-  
+        AudioManager.instance.StopWalkSFX();
+    }
 
     private void HandleCameraMovement()
     {
@@ -414,9 +423,22 @@ public class PlayerController : MonoBehaviour
         Vector3 targetVelocity = new Vector3(inputVector.x, 0, inputVector.y);
         targetVelocity = HandleSprintingMovement(targetVelocity);
 
+        CheckIfWalking(targetVelocity);
+
         HandleMovement(targetVelocity);
 
         AdjustGravity();
+    }
+
+    void CheckIfWalking(Vector3 targetVelocity)
+    {
+        if(targetVelocity != Vector3.zero)
+        {
+            isWalking = true;
+            return;
+        }
+
+        isWalking = false;
     }
 
     public void AdjustGravity()

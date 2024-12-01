@@ -123,6 +123,18 @@ public class PlayerDeviceController : MonoBehaviour
     private void ToggleLens()
     {
         isLensEquipped = !isLensEquipped;
+        PlayLensSFX();
+    }
+
+    private void PlayLensSFX()
+    {
+        if(isLensEquipped)
+        {
+            AudioManager.instance.PlaySFX("LensActivate");
+            return;
+        }
+
+        AudioManager.instance.PlaySFX("LensDeactivate");
     }
 
     private void UpdateGrayscaleEffect()

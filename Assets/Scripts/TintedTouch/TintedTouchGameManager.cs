@@ -13,6 +13,7 @@ public class TintedTouchGameManager : MonoBehaviour
     [SerializeField] List<int> currSelectedSwitches = new List<int>();
 
     bool allSwitchOn = false;
+    bool sfxPlayed = false;
 
     private void Update()
     {
@@ -36,9 +37,11 @@ public class TintedTouchGameManager : MonoBehaviour
             RaisePlatform(i, "SwitchIsOn", switchesObj[i].GetComponent<Switch>().isOn);
         }
 
-        if (allSwitchOn)
+        if (allSwitchOn && !sfxPlayed)
         {
             RaisePlatform(3, "SwitchIsOn", allSwitchOn);
+            AudioManager.instance.PlaySFX("CorrectPuzzle");
+            sfxPlayed = true;
         }
     }
 

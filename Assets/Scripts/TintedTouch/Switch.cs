@@ -13,6 +13,8 @@ public class Switch : Interactables
             return;
         }
 
+        AudioManager.instance.PlaySFX("ButtonClick");
+
         isOn = !isOn;
         isInteractable = false;
     }
@@ -21,5 +23,6 @@ public class Switch : Interactables
     {
         isOn = false;
         isInteractable = true;
+        AudioManager.instance.PlaySFX("IncorrectPuzzle");
     }
 }

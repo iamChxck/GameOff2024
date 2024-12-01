@@ -9,7 +9,7 @@ public class AudioManager : MonoBehaviour
 
     [SerializeField]
     private Sound[] musicSounds, sfxSounds;
-    public AudioSource musicSource, sfxSource;
+    public AudioSource musicSource, sfxSource, walkSFXSource;
 
     private void Awake()
     {
@@ -79,5 +79,17 @@ public class AudioManager : MonoBehaviour
     public void UpdateSFXVolume(float _volume)
     {
         sfxSource.volume = _volume;
+    }
+
+    public void PlayWalkSFX()
+    {
+        walkSFXSource.enabled = true;
+        Debug.Log("Play");
+    }
+
+    public void StopWalkSFX()
+    {
+        walkSFXSource.enabled = false;
+        Debug.Log("Stop");
     }
 }
