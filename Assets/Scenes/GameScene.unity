@@ -11384,6 +11384,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colorToRestore: Green
+  endGameAnim: {fileID: 0}
 --- !u!4 &307622955 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 3c9d0449380c09e429454d8bf8d5fb89, type: 3}
@@ -20095,6 +20096,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colorToRestore: Red
+  endGameAnim: {fileID: 0}
 --- !u!1001 &585702560
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -31824,6 +31826,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colorToRestore: Blue
+  endGameAnim: {fileID: 0}
 --- !u!1001 &879017035
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -39866,6 +39869,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colorToRestore: Brown
+  endGameAnim: {fileID: 1074556668}
 --- !u!114 &1074556668
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -44722,6 +44726,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colorToRestore: Yellow
+  endGameAnim: {fileID: 0}
 --- !u!1001 &1185181916
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -47830,6 +47835,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colorToRestore: Purple
+  endGameAnim: {fileID: 0}
 --- !u!1 &1274013465
 GameObject:
   m_ObjectHideFlags: 0
@@ -58962,6 +58968,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colorToRestore: LightBlue
+  endGameAnim: {fileID: 0}
 --- !u!1001 &1593860761
 PrefabInstance:
   m_ObjectHideFlags: 0
