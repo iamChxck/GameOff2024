@@ -5,7 +5,7 @@ using UnityEngine.UI;
 public class PlayerController : MonoBehaviour
 {
     public GameObject pauseUI;
-    private bool paused = false;
+    public bool paused = false;
     private Rigidbody rb;
     private PlayerInputActions inputActions; // Reference to the generated class
 
@@ -101,7 +101,7 @@ public class PlayerController : MonoBehaviour
     // Internal Variables
     [SerializeField]
     private bool isGrounded = false;
-    [SerializeField] 
+    [SerializeField]
     private Transform playerFeet;
     #endregion
 
@@ -135,6 +135,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] Animator playerAnimator;
     [SerializeField] private float gravityMultiplier = 1f;
 
+    public GameObject inventoryDisplay;
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
@@ -156,13 +158,13 @@ public class PlayerController : MonoBehaviour
 
         // Access the input actions
         movementAction = inputActions.Player.Movement;
-              sprintAction = inputActions.Player.Sprint;
+        sprintAction = inputActions.Player.Sprint;
         lookAction = inputActions.Player.Look;
         jumpAction = inputActions.Player.Jump;
         zoomAction = inputActions.Player.Zoom;
         crouchAction = inputActions.Player.Crouch;
         pauseMenuAction = inputActions.UI.Pause;
-  
+
 
         // Bind the actions to a method
         jumpAction.performed += ctx => Jump();
@@ -173,17 +175,22 @@ public class PlayerController : MonoBehaviour
         pauseMenuAction.performed += ctx => Paused();
     }
 
-    public void Paused() {
-        if (paused) {
-            //lockCursor = true;
+    public void Paused()
+    {
+        if (paused)
+        {
             Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
             pauseUI.SetActive(false);
             paused = false;
-            //Time.timeScale = 1;
-        } else if (!paused) {
-            //lockCursor = true;
-            Cursor.lockState = CursorLockMode.Confined;
-            //Time.timeScale = 0;
+            Time.timeScale = 1;
+        }
+        else
+        {
+            inventoryDisplay.SetActive(false);
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+            Time.timeScale = 0;
             pauseUI.SetActive(true);
             paused = true;
         }
@@ -278,7 +285,7 @@ public class PlayerController : MonoBehaviour
 
     void PlayWalkSFX()
     {
-        if(isWalking)
+        if (isWalking)
         {
             AudioManager.instance.PlayWalkSFX();
             return;
@@ -452,7 +459,7 @@ public class PlayerController : MonoBehaviour
 
     void CheckIfWalking(Vector3 targetVelocity)
     {
-        if(targetVelocity != Vector3.zero)
+        if (targetVelocity != Vector3.zero)
         {
             isWalking = true;
             return;

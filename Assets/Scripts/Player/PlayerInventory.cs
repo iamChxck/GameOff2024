@@ -5,6 +5,8 @@ public class PlayerInventory : MonoBehaviour
     public DynamicInventory inventory;
     public InventoryDisplay inventoryDisplay;
 
+    public GameObject pauseMenu;
+
     public bool isInventoryOpen;
     public bool hasKey; // Boolean to track if the inventory contains a key
 
@@ -23,15 +25,6 @@ public class PlayerInventory : MonoBehaviour
     {
         ToggleInventory();
 
-        if (isInventoryOpen)
-        {
-            Cursor.lockState = CursorLockMode.None;
-        }
-        else
-        {
-            Cursor.lockState = CursorLockMode.Locked;
-        }
-
         // Update the hasKey status every frame (optional, if needed dynamically)
         CheckForKey();
     }
@@ -40,19 +33,26 @@ public class PlayerInventory : MonoBehaviour
     {
         if (InputActionSingleton.Instance.UI.Inventory.triggered)
         {
-            Debug.Log("Toggling Inventory");
             if (inventoryDisplay.gameObject.activeInHierarchy)
             {
                 inventoryDisplay.gameObject.SetActive(false);
                 isInventoryOpen = false;
+                Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = false;
             }
             else
             {
+                pauseMenu.SetActive(false);
+                GetComponent<PlayerController>().paused = false;
+                Time.timeScale = 1;
                 inventoryDisplay.gameObject.SetActive(true);
                 isInventoryOpen = true;
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
             }
         }
     }
+
 
     /// <summary>
     /// Check if the inventory contains an item named "Key"
