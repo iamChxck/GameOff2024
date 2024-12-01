@@ -16,4 +16,4 @@ MonoBehaviour:
   itemCategory: Device
   itemDescription: Lens that can view that which is hidden
   modelPrefab: {fileID: 6768950681056428851, guid: 6d5163dc1f77c944180a9e8bd8644484, type: 3}
-  icon: {fileID: 21300000, guid: 3ee8d7e7dce96c546b9070ec9b556a75, type: 3}
+  icon: {fileID: 21300000, guid: c620bf9a807283141adf30da35d0b4d3, type: 3}

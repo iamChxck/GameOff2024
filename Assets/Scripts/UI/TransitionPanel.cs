@@ -24,7 +24,7 @@ public class TransitionPanel : MonoBehaviour
             TransitionPanel.instance.FadeOutTransition();
         }
 
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSecondsRealtime(1);
 
         SceneManager.LoadScene(sceneName);
     }

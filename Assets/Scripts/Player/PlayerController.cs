@@ -4,6 +4,8 @@ using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
+    public GameObject pauseUI;
+    private bool paused = false;
     private Rigidbody rb;
     private PlayerInputActions inputActions; // Reference to the generated class
 
@@ -14,6 +16,7 @@ public class PlayerController : MonoBehaviour
     private InputAction zoomAction;
     private InputAction crouchAction;
     private InputAction sprintAction;
+    private InputAction pauseMenuAction;
     #endregion
 
     #region Camera Movement Variables
@@ -158,6 +161,7 @@ public class PlayerController : MonoBehaviour
         jumpAction = inputActions.Player.Jump;
         zoomAction = inputActions.Player.Zoom;
         crouchAction = inputActions.Player.Crouch;
+        pauseMenuAction = inputActions.UI.Pause;
   
 
         // Bind the actions to a method
@@ -166,8 +170,24 @@ public class PlayerController : MonoBehaviour
         zoomAction.canceled += ctx => OnZoomCanceled();
         crouchAction.started += ctx => OnCrouchStarted();
         crouchAction.canceled += ctx => OnCrouchCanceled();
+        pauseMenuAction.performed += ctx => Paused();
     }
 
+    public void Paused() {
+        if (paused) {
+            //lockCursor = true;
+            Cursor.lockState = CursorLockMode.Locked;
+            pauseUI.SetActive(false);
+            paused = false;
+            //Time.timeScale = 1;
+        } else if (!paused) {
+            //lockCursor = true;
+            Cursor.lockState = CursorLockMode.Confined;
+            //Time.timeScale = 0;
+            pauseUI.SetActive(true);
+            paused = true;
+        }
+    }
 
     void Start()
     {
