@@ -79,6 +79,7 @@ public class AudioManager : MonoBehaviour
     public void UpdateSFXVolume(float _volume)
     {
         sfxSource.volume = _volume;
+        walkSFXSource.volume = _volume;
     }
 
     public void PlayWalkSFX()
